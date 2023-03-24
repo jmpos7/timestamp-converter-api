@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Timestamp Microservice | freeCodeCamp.org</title>
+    <link rel="shortcut icon" href="https://cdn.freecodecamp.org/universal/favicons/favicon-32x32.png" type="image/x-icon"/>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+    <link href="style.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <div class="container">
+      <h1>Timestamp Microservice</h1>
+      <h3>Convert Date to Unix Timestamp and UTC Date</h3>
+      <form id="date-form">
+        <label for="date-input">Enter a date:</label>
+        <input type="text" id="date-input" name="date">
+        <button type="submit">Submit</button>
+      </form>
+      <div class="output-wrapper">
+        <div id="output"></div>
+      </div>
+    </div>
+
+    <script>
+  const form = document.querySelector('#date-form');
+  const output = document.querySelector('#output');
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const dateInput = document.querySelector('#date-input').value;
+    const response = await fetch(`/api/${encodeURIComponent(dateInput)}`);
+    const data = await response.json();
+
+    if (data.error) {
+      output.innerHTML = `<p class="error">${data.error}</p>`;
+    } else {
+      const result = JSON.stringify({
+        unix: data.unix,
+        utc: data.utc
+      });
+      output.innerHTML = `<code class="code">${result}</code>`;
+    }
+  });
+</script>
+  </body>
+</html>
